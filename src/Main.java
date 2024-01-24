@@ -52,7 +52,14 @@ dzięki temu oszczędzamy na obliczeniach. sprawdzamy najbardziej ogółny hitbo
 Wątek nie tworzymy w Pant component XD,
 
 
+wektor zamiast Array list, i wektor jest bezpieczny na wątki, ale to nie jest zbyt git.
+Bo łatwiej np zrobić blok w którym ustawiamy wszystkie zombie niż dla kazdego get() wołamy synchronicznie.
+
+nosql git przy dodawaniu,
+
  */
+
+
 
 
 

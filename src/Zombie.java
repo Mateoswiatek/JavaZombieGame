@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Zombie {
+public class Zombie implements Sprite {
     BufferedImage tape;
     int x = 500;
     int y = 500;
@@ -30,7 +30,7 @@ public class Zombie {
      * @param g
      * @param parent
      */
-
+    @Override
     public void draw(Graphics g, JPanel parent) {
 
 //        Image img = tape.getSubimage(0, 0, 200, 312); // pobierz klatkę
@@ -42,10 +42,24 @@ public class Zombie {
     /**
      * Zmień stan - przejdź do kolejnej klatki
      */
-
+    @Override
     public void next() {
-        // x -= 20 * scale;
+        x -= 5 * scale;
         index = (index + 1) % 10;
     }
 
+    @Override
+    public boolean isVisble() {
+        return true;
+    }
+
+    @Override
+    public boolean isCloser(Sprite other) {
+        return this.scale > other.getScale();
+    }
+
+    @Override
+    public double getScale() {
+        return scale;
+    }
 }

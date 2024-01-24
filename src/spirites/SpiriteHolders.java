@@ -1,3 +1,5 @@
+package spirites;
+
 import spirites.Sprite;
 import factories.SpriteFactory;
 
@@ -11,7 +13,7 @@ public class SpiriteHolders {
     SpriteFactory spriteFactory;
     final List<Sprite> spriteList;
     Random random = new Random();
-    SpiriteHolders(SpriteFactory spriteFactory, List<Sprite> spriteList){
+    public SpiriteHolders(SpriteFactory spriteFactory, List<Sprite> spriteList){
         this.spriteFactory = spriteFactory;
         this.spriteList = spriteList;
     }

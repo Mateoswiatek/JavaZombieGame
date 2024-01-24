@@ -1,3 +1,7 @@
+package Game;
+
+import CrossHair.CrossHair;
+import spirites.SpiriteHolders;
 import spirites.Sprite;
 import factories.ZombieFactory;
 
@@ -14,7 +18,7 @@ public class Main {
         ZombieFactory zombieFactory = ZombieFactory.getInstance("../resources/walkingdead.png");
         CrossHair crossHair = new CrossHair();
 
-        // Przerobić na liste list, lub na jakiś słownik, gdzie mamy klay, tak aby np DrawPanel mógł rysować wszystkie obiekty
+        // Przerobić na liste list, lub na jakiś słownik, gdzie mamy klay, tak aby np Game.DrawPanel mógł rysować wszystkie obiekty
         List<Sprite> spriteList = new ArrayList<>();
         SpiriteHolders spawnSpirite = new SpiriteHolders(zombieFactory, spriteList);
 
@@ -26,8 +30,6 @@ public class Main {
         // był problem, bo wołało się przed utworzeniem klasy.
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleAtFixedRate(spawnSpirite::spawnSpirite, 0, 2, TimeUnit.SECONDS);
-
-
 
 
         frame.setContentPane(panel);
@@ -75,7 +77,7 @@ sztuczka z aktywacją -> timer zmieniający na chwilę -> np ogień czy coś pod
 
 
 lista nasłuchujących. metoda add / remove, notify lisseners - wysłanie do wszytkich elementów.
-w tym przypadku będzie tylko inforamcja do DrawPanel, ale to jest przykład bardziej ogólnego podejścia.
+w tym przypadku będzie tylko inforamcja do Game.DrawPanel, ale to jest przykład bardziej ogólnego podejścia.
 
 
 zamiast wszsytkich hitboxu, pośredni jest wewnątrz.

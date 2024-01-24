@@ -1,3 +1,7 @@
+package CrossHair;
+
+import Game.DrawPanel;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -10,17 +14,33 @@ import java.util.Objects;
 public class CrossHair implements MouseMotionListener, MouseListener {
 
     DrawPanel parent;
-    Image cursorImage;
+
+    Cursor normalCursor;
+    Cursor fireCursor;
+    int x;
+    int y;
+    boolean activated = false;
 
     // Zmienilem, aby nie bylo zaleznosci, bo przeciez moga byc rozne celowniki
-    CrossHair() {
+    public CrossHair() {
+        Image normalCursorImage;
+        Image fireCursorImage;
 
         // TODO skorka celownika, ewentualnie dwie skorki, wgl to mozna to rowniez rozbic na bronie, aby celownik byl czescia broni, lista dostepnych broni, kazdy wgrywa swoj celownik i inne rzeczy
+        // TODO dodać metodę zmiany celownika -> kwestia załadowania innego pliku, ewentualnie jakieś skalowanie.
         try {
-            cursorImage = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/crosshair1.png")));
+            normalCursorImage = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/crosshair1_normal_32.png")));
+            fireCursorImage = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/crosshair1_fire_32.png")));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+
+        int xNormmal = normalCursorImage.getWidth(null);
+        int yNormal = normalCursorImage.getHeight(null);
+        int xFire = fireCursorImage.getWidth(null);
+        int yFire = fireCursorImage.getHeight(null);
+        normalCursor = Toolkit.getDefaultToolkit().createCustomCursor(normalCursorImage , new Point(xNormmal/2, yNormal/2), "cursor"); // miejsce przyłożenia wzgledem obrazka
+        fireCursor = Toolkit.getDefaultToolkit().createCustomCursor(fireCursorImage , new Point(xFire/2, yFire/2), "cursor"); // miejsce przyłożenia wzgledem obrazka
 
     }
     public CrossHair setDrawPanel(DrawPanel parent){
@@ -29,7 +49,7 @@ public class CrossHair implements MouseMotionListener, MouseListener {
         parent.addMouseListener(this);
         return this;
     }
-    void draw(Graphics g){
+    public void draw(Graphics g){
 /*
         if(activated)g.setColor(Color.RED);
         else g.setColor(Color.WHITE);
@@ -51,13 +71,12 @@ public class CrossHair implements MouseMotionListener, MouseListener {
         // Prosty celownik
 //        g.drawOval(x-20, y-20, 40, 40);
     }
-    int x;
-    int y;
-    boolean activated = false;
-
     @Override
     public void mousePressed(MouseEvent e) {
+        System.out.println("Nacisnieto");
+
         // tutaj jakis licznik w zaleznosci od uzywanej broni, np ze nie mozna zbyt czesto uzywac, takie jakby przeladowanie.
+        parent.setCursor(fireCursor);
         x = e.getX();
         y = e.getY();
         System.out.println("x= " + x);
@@ -65,11 +84,12 @@ public class CrossHair implements MouseMotionListener, MouseListener {
 
         // Dopiero tutaj pobieramy polozenie myszki, o wiele bardziej wydajne ???
         activated = true;
-        System.out.println("Nacisnieto");
     }
     @Override
     public void mouseReleased(MouseEvent e) {
         System.out.println("Zwolniono");
+
+        parent.setCursor(normalCursor);
         activated = false;
     }
 
@@ -90,22 +110,16 @@ public class CrossHair implements MouseMotionListener, MouseListener {
     public void mouseEntered(MouseEvent e) {
         System.out.println("jestemy wewnatrz");
 
-        Cursor myCursor;
-
-        // TODO zamienic aby celownik byl jako kursor, niby dziala wzglednie, ale trzeba by przekalibrowac i podmieniac na inny obraz???
-        // gdy sie to zakomenduje to bedzie ten wczytany, ale trzeba byloby sie pobawic aby obraz byl idelanie tam gdzie kursor oraz przekalibrowac
-
         // Ukrycie całkowicie kursora
 /*
         byte[]imageByte=new byte[0];
         cursorImage=Toolkit.getDefaultToolkit().createImage(imageByte);
         myCursor=Toolkit.getDefaultToolkit().createCustomCursor(cursorImage,new Point(0,0),"cursor");
+        parent.setCursor(cursorImage);
 */
 
-
-        myCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage , new Point(256, 256), "cursor"); // miejsce przyłożenia?
-
-        parent.setCursor(myCursor);
+        // kursor jako celownik domyslny
+        parent.setCursor(normalCursor);
     }
     @Override
     public void mouseExited(MouseEvent e) {System.out.println("wyszlismy");}

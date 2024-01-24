@@ -1,3 +1,6 @@
+package Game;
+
+import CrossHair.CrossHair;
 import spirites.Sprite;
 
 import javax.imageio.ImageIO;

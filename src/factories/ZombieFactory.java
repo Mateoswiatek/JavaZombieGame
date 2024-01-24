@@ -9,11 +9,16 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * Jest Singletonem
+ */
 public class ZombieFactory implements SpriteFactory{
     BufferedImage tape;
 //     static boolean istnieje = false;
     Random random = new Random();
-    public ZombieFactory(String pathToImage) { // "/resources/walkingdead.png"
+
+    private static ZombieFactory instance;
+    private ZombieFactory(String pathToImage) { // "/resources/walkingdead.png"
         try {
             tape = ImageIO.read(Objects.requireNonNull(getClass().getResource(pathToImage)));
         } catch (IOException e){
@@ -23,6 +28,11 @@ public class ZombieFactory implements SpriteFactory{
             //istnieje = true;
         }
     }
+    public static ZombieFactory getInstance(String pathToImage){
+        if(instance == null) instance = new ZombieFactory(pathToImage);
+        return instance;
+    }
+
     @Override
     public Sprite newSprite(int x, int y) {
         double scale = random.nextDouble(2);

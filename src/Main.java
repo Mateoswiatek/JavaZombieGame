@@ -1,6 +1,9 @@
+import Spirites.Sprite;
 import factories.ZombieFactory;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -8,15 +11,21 @@ import java.util.concurrent.TimeUnit;
 public class Main {
     public static void main(String[] args) {
 
-        ZombieFactory zombieFactory = new ZombieFactory("../resources/walkingdead.png");
+        ZombieFactory zombieFactory = ZombieFactory.getInstance("../resources/walkingdead.png");
+        // Przerobić na liste list, lub na jakiś słownik, gdzie mamy klay, tak aby np DrawPanel mógł rysować wszystkie obiekty
+        List<Sprite> spriteList = new ArrayList<>();
+
+        SpiriteHolders spawnSpirite = new SpiriteHolders(zombieFactory, spriteList);
 
         JFrame frame = new JFrame("Zombie");
-        DrawPanel panel = new DrawPanel(Main.class.getResource("/resources/tlo.jpg"), zombieFactory);
+        DrawPanel panel = new DrawPanel(Main.class.getResource("/resources/tlo.jpg"),30, spriteList );
 
         //TODO zamienic wyswietlanie tez na zegarowe. tak samo jak robimy spawnowanie, to zroibc uaktualnianie
         // był problem, bo wołało się przed utworzeniem klasy.
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(panel::spawnSpirite, 0, 2, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(spawnSpirite::spawnSpirite, 0, 2, TimeUnit.SECONDS);
+
+
 
 
         frame.setContentPane(panel);
@@ -27,8 +36,20 @@ public class Main {
         frame.setVisible(true);
 
     }
+
+
+
 }
 
+/*
+zastosowane wzorce:
+- Factory - tworzenie obiektów
+- Singleton  - przy tworzeniu fabryk.
+
+
+
+
+ */
 
 /*
 wzorzec factory

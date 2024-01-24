@@ -14,7 +14,6 @@ public class DrawPanel  extends JPanel {
     final List<Sprite> spriteList;
     // Tutaj tylko ustawiamy ze ten obiekt bedzie wyswietal celownik, bo sam celownik moze byc modyfikowany i ustawiany zupelnie niezaleznie.
     CrossHair crossHair;
-    // TODO Dodać jakieś parametry do celownika,bo jest to część
 
     public DrawPanel(URL backgroundImagageURL, CrossHair crossHair, int fps, List<Sprite> spriteList) {
         this.FPS = fps;
@@ -26,6 +25,11 @@ public class DrawPanel  extends JPanel {
             e.printStackTrace();
         }
         new AnimationThread().start();
+
+        // Zrobione w celowniku, bo to celownik okrela tak nparwde co chce robic?
+        // dodawanie naszego obiektu jako Listener
+//        this.addMouseMotionListener(crossHair);
+//        this.addMouseListener(crossHair);
     }
     @Override
     public void paintComponent(Graphics g) {

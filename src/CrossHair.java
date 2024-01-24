@@ -30,9 +30,9 @@ public class CrossHair implements MouseMotionListener, MouseListener {
         return this;
     }
     void draw(Graphics g){
+
         if(activated)g.setColor(Color.RED);
         else g.setColor(Color.WHITE);
-
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(4));
@@ -57,8 +57,16 @@ public class CrossHair implements MouseMotionListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println();
+        // tutaj jakis licznik w zaleznosci od uzywanej broni, np ze nie mozna zbyt czesto uzywac, takie jakby przeladowanie.
+        activated = true;
+        System.out.println("Nacisnieto");
     }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        System.out.println("Zwolniono");
+        activated = false;
+    }
+
     @Override
     public void mouseMoved(MouseEvent e) {
         x = e.getX();
@@ -73,22 +81,8 @@ public class CrossHair implements MouseMotionListener, MouseListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        activated = true;
-        System.out.println("Nacisnieto");
-    }
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        activated = false;
-    }
-    @Override
     public void mouseEntered(MouseEvent e) {
         System.out.println("jestemy wewnatrz");
-        // Ukrywamy domyslny kursor myszy, bo u nas jest celownik
-//        parent.setCursor();
-//        parent.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-
 
         Cursor myCursor;
 
@@ -96,18 +90,19 @@ public class CrossHair implements MouseMotionListener, MouseListener {
         // gdy sie to zakomenduje to bedzie ten wczytany, ale trzeba byloby sie pobawic aby obraz byl idelanie tam gdzie kursor oraz przekalibrowac
 
         // Ukrycie całkowicie kursora
-        /*
+
         byte[]imageByte=new byte[0];
         cursorImage=Toolkit.getDefaultToolkit().createImage(imageByte);
         myCursor=Toolkit.getDefaultToolkit().createCustomCursor(cursorImage,new Point(0,0),"cursor");
-         */
+
 
 
         //myCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage , new Point(256, 256), "cursor"); // miejsce przyłożenia?
 
-        //parent.setCursor(myCursor);
+        parent.setCursor(myCursor);
     }
     @Override
     public void mouseExited(MouseEvent e) {System.out.println("wyszlismy");}
-
+    @Override
+    public void mouseClicked(MouseEvent e) {}
 }

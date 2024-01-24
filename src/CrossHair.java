@@ -33,7 +33,7 @@ public class CrossHair implements MouseMotionListener, MouseListener {
         if(activated)g.setColor(Color.RED);
         else g.setColor(Color.WHITE);
 
-      /*
+
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(4));
         g2d.translate(x, y);
@@ -46,11 +46,10 @@ public class CrossHair implements MouseMotionListener, MouseListener {
 
         g2d.drawLine(0, -crossSize, 0, -crossSizeSpace); // Linia pionowa1
         g2d.drawLine(0, crossSizeSpace, 0, crossSize); // Linia pionowa2
-       */
+
 
         // Prosty celownik
-        g.drawOval(x-20, y-20, 40, 40);
-
+//        g.drawOval(x-20, y-20, 40, 40);
     }
     int x;
     int y;

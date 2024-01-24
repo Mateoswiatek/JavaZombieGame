@@ -1,4 +1,4 @@
-import Spirites.Sprite;
+import spirites.Sprite;
 import factories.ZombieFactory;
 
 import javax.swing.*;
@@ -12,13 +12,15 @@ public class Main {
     public static void main(String[] args) {
 
         ZombieFactory zombieFactory = ZombieFactory.getInstance("../resources/walkingdead.png");
+        CrossHair crossHair = new CrossHair();
+
         // Przerobić na liste list, lub na jakiś słownik, gdzie mamy klay, tak aby np DrawPanel mógł rysować wszystkie obiekty
         List<Sprite> spriteList = new ArrayList<>();
-
         SpiriteHolders spawnSpirite = new SpiriteHolders(zombieFactory, spriteList);
 
+
         JFrame frame = new JFrame("Zombie");
-        DrawPanel panel = new DrawPanel(Main.class.getResource("/resources/tlo.jpg"),30, spriteList );
+        DrawPanel panel = new DrawPanel(Main.class.getResource("/resources/tlo.jpg"), crossHair, 30, spriteList );
 
         //TODO zamienic wyswietlanie tez na zegarowe. tak samo jak robimy spawnowanie, to zroibc uaktualnianie
         // był problem, bo wołało się przed utworzeniem klasy.
@@ -45,7 +47,7 @@ public class Main {
 zastosowane wzorce:
 - Factory - tworzenie obiektów
 - Singleton  - przy tworzeniu fabryk.
-
+- Observer Obserwator - Celownik
 
 
 

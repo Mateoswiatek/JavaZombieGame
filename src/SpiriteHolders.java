@@ -1,4 +1,4 @@
-import Spirites.Sprite;
+import spirites.Sprite;
 import factories.SpriteFactory;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class SpiriteHolders {
     SpriteFactory spriteFactory;
-    List<Sprite> spriteList;
+    final List<Sprite> spriteList;
     Random random = new Random();
     SpiriteHolders(SpriteFactory spriteFactory, List<Sprite> spriteList){
         this.spriteFactory = spriteFactory;
@@ -17,7 +17,8 @@ public class SpiriteHolders {
     }
 
     public void spawnSpirite() {
-        spriteList.add(spriteFactory.newSprite(1000, random.nextInt(400, 550))); //800 512
+        synchronized (spriteList) {
+            spriteList.add(spriteFactory.newSprite(1000, random.nextInt(400, 550))); //800 512
+        }
     }
-
 }

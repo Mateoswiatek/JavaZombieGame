@@ -1,4 +1,4 @@
-package Spirites;
+package spirites;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

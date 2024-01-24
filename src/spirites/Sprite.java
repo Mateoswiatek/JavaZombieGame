@@ -1,4 +1,4 @@
-package Spirites;
+package spirites;
 
 import javax.swing.*;
 import java.awt.*;

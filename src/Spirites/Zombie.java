@@ -1,3 +1,5 @@
+package Spirites;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -5,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Zombie implements Sprite {
+public class Zombie implements  Sprite{
     BufferedImage tape;
     int x = 500;
     int y = 500;
@@ -15,11 +17,23 @@ public class Zombie implements Sprite {
     int HEIGHT = 312; // z rysunku;
     int WIDTH = 200; // z rysunku;
 
-    Zombie(int x, int y, double scale) throws IOException {
+    /*
+    public Zombie(int x, int y, double scale) {
         this.x = x;
         this.y = y;
         this.scale = scale;
-        this.tape = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/walkingdead.png"))); // getClass().getResource("/resources/walkingdead.png")
+        this.tape = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/walkingdead.png")));
+    }*/
+
+    public Zombie(int x, int y, double scale, BufferedImage tape){
+        this.x = x;
+        this.y = y;
+        this.scale = scale;
+        try {
+            this.tape = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/walkingdead.png")));
+        } catch( IOException e){
+            e.printStackTrace();
+        }
     }
 
 

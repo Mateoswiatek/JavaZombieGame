@@ -1,17 +1,28 @@
-import javax.swing.*;
+import factories.ZombieFactory;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import javax.swing.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class Main {
     public static void main(String[] args) {
-        // write your code here
+
+        ZombieFactory zombieFactory = new ZombieFactory("../resources/walkingdead.png");
 
         JFrame frame = new JFrame("Zombie");
-        DrawPanel panel = new DrawPanel(Main.class.getResource("/resources/tlo.jpg"));
+        DrawPanel panel = new DrawPanel(Main.class.getResource("/resources/tlo.jpg"), zombieFactory);
+
+        //TODO zamienic wyswietlanie tez na zegarowe. tak samo jak robimy spawnowanie, to zroibc uaktualnianie
+        // był problem, bo wołało się przed utworzeniem klasy.
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.scheduleAtFixedRate(panel::spawnSpirite, 0, 2, TimeUnit.SECONDS);
+
+
         frame.setContentPane(panel);
         frame.setSize(1000, 700);
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setResizable(true);
         frame.setVisible(true);
 

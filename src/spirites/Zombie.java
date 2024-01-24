@@ -46,10 +46,7 @@ public class Zombie implements  Sprite{
      */
     @Override
     public void draw(Graphics g, JPanel parent) {
-
-//        Image img = tape.getSubimage(0, 0, 200, 312); // pobierz klatkę
         Image img = tape.getSubimage(WIDTH * index, 0, WIDTH, HEIGHT); // pobierz klatkę
-
         g.drawImage(img, x, y - (int) (HEIGHT * scale) / 2, (int) (WIDTH * scale), (int) (HEIGHT * scale), parent);
     }
 

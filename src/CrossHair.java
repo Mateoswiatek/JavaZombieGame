@@ -1,13 +1,27 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
+import java.util.Objects;
 
+//TODO zamiana z wyswietlania jako elementu draw, zamienic na obrazek, latwiej bedzie i mniej zdarzen bo nie trzeba za kazdym razem przemalowywac
 public class CrossHair implements MouseMotionListener, MouseListener {
 
     DrawPanel parent;
+    Image cursorImage;
+
     // Zmienilem, aby nie bylo zaleznosci, bo przeciez moga byc rozne celowniki
     CrossHair() {
+
+        // TODO skorka celownika, ewentualnie dwie skorki, wgl to mozna to rowniez rozbic na bronie, aby celownik byl czescia broni, lista dostepnych broni, kazdy wgrywa swoj celownik i inne rzeczy
+        try {
+            cursorImage = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/crosshair1.png")));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
     }
     public CrossHair setDrawPanel(DrawPanel parent){
         this.parent = parent;
@@ -18,8 +32,8 @@ public class CrossHair implements MouseMotionListener, MouseListener {
     void draw(Graphics g){
         if(activated)g.setColor(Color.RED);
         else g.setColor(Color.WHITE);
-//        System.out.println("x=" + x);
-//        System.out.println("y=" + y);
+
+      /*
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(4));
         g2d.translate(x, y);
@@ -32,16 +46,12 @@ public class CrossHair implements MouseMotionListener, MouseListener {
 
         g2d.drawLine(0, -crossSize, 0, -crossSizeSpace); // Linia pionowa1
         g2d.drawLine(0, crossSizeSpace, 0, crossSize); // Linia pionowa2
+       */
 
         // Prosty celownik
-//        g.drawOval(x, y, 40, 40);
+        g.drawOval(x-20, y-20, 40, 40);
 
     }
-
-    /* x, y to współrzedne celownika
-       activated - flaga jest ustawiana po oddaniu strzału (naciśnięciu przyciku myszy)
-       // jesli tak, to parent.repaint();
-    */
     int x;
     int y;
     boolean activated = false;
@@ -52,7 +62,6 @@ public class CrossHair implements MouseMotionListener, MouseListener {
     }
     @Override
     public void mouseMoved(MouseEvent e) {
-        System.out.println("weszlismy");
         x = e.getX();
         y = e.getY();
         parent.repaint();
@@ -66,15 +75,40 @@ public class CrossHair implements MouseMotionListener, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        activated = true;
         System.out.println("Nacisnieto");
     }
     @Override
     public void mouseReleased(MouseEvent e) {
-        System.out.println("Cos");
+        activated = false;
     }
     @Override
-    public void mouseEntered(MouseEvent e) {System.out.println("Cos");}
+    public void mouseEntered(MouseEvent e) {
+        System.out.println("jestemy wewnatrz");
+        // Ukrywamy domyslny kursor myszy, bo u nas jest celownik
+//        parent.setCursor();
+//        parent.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+
+
+        Cursor myCursor;
+
+        // TODO zamienic aby celownik byl jako kursor, niby dziala wzglednie, ale trzeba by przekalibrowac i podmieniac na inny obraz???
+        // gdy sie to zakomenduje to bedzie ten wczytany, ale trzeba byloby sie pobawic aby obraz byl idelanie tam gdzie kursor oraz przekalibrowac
+
+        // Ukrycie całkowicie kursora
+        /*
+        byte[]imageByte=new byte[0];
+        cursorImage=Toolkit.getDefaultToolkit().createImage(imageByte);
+        myCursor=Toolkit.getDefaultToolkit().createCustomCursor(cursorImage,new Point(0,0),"cursor");
+         */
+
+
+        //myCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage , new Point(256, 256), "cursor"); // miejsce przyłożenia?
+
+        //parent.setCursor(myCursor);
+    }
     @Override
-    public void mouseExited(MouseEvent e) {System.out.println("Cos");}
+    public void mouseExited(MouseEvent e) {System.out.println("wyszlismy");}
 
 }

@@ -42,7 +42,8 @@ public class Main {
 
         //TODO przeniesc do nowej klasy gun
         GunSounds gunSounds = new GunSounds("src/resources/gunshot.wav");
-        new Thread(gunSounds).start();
+        Thread gunSoundsThread = new Thread(gunSounds);
+        gunSoundsThread.start();
         //TODO dodać to do klasy Gun? jako obastracyjny poziom.
         crossHair.addCrossHairListener(gunSounds);
 
@@ -78,6 +79,19 @@ public class Main {
             System.out.println(spriteList.size());
         }
         */
+
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                scheduledExecutorService.close();
+                panel.animationThread.interrupt();
+                gunSoundsThread.interrupt();
+                // tu zatrzymaj watek
+                // ale nie za pomocą metody stop() !!!
+
+                //zatrzymaj też timer celownika za pomocą cancel(). Timer to także wątek...
+            }
+        });
     }
 
 

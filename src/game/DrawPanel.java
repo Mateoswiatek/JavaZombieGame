@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class DrawPanel  extends JPanel implements CrossHairListener {
+    public AnimationThread animationThread;
     BufferedImage background;
     int FPS = 30;
     final List<Sprite> spriteList;
@@ -22,9 +23,11 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
     // Tutaj tylko ustawiamy ze ten obiekt bedzie wyswietal celownik, bo sam celownik moze byc modyfikowany i ustawiany zupelnie niezaleznie.
     CrossHair crossHair;
     private JLabel label;
-    int licznik;
+    int shotCounter = 0;
+    int killed = 0;
+
     public DrawPanel(URL backgroundImagageURL, CrossHair crossHair, int fps, List<Sprite> spriteList) {
-        label = new JLabel("Wynik: " + licznik);
+        label = new JLabel("Wynik: " + killed + " Celnosc:");
         label.setForeground(Color.BLACK);
         Font font = label.getFont();
         label.setFont(new Font(font.getName(), font.getStyle(), 30));
@@ -45,7 +48,8 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new AnimationThread().start();
+        animationThread = new AnimationThread();
+        animationThread.start();
     }
     @Override
     public void paintComponent(Graphics g) {
@@ -60,14 +64,14 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
             // TODO animacja smierci, dodac do tej metody przed usunieciem co jest wolana dla kazdego obiektu w Javie.
             spriteList.removeIf(sprite -> {
                 sprite.draw(g2d, this);
-                if(!sprite.isVisble()) label.setText("Wynik: " + --licznik);
+                if(!sprite.isVisble()) label.setText("Wynik: " + --killed);
                 return !sprite.isVisble(); // usuwa jesli jest false
             });
 
         }
 
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, 170, 40);
+        g.fillRect(0, 0, 430, 40);
 
         //TODO to jest do wywalenia
         crossHair.draw(g2d);
@@ -75,6 +79,7 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
 
     @Override
     public void onShotsFired(int x, int y) {
+        shotCounter++;
         //System.out.println("DrawPanel dostal informacje o strzale! w x,y = " + x + ", " + y);
         //TODO dokonczyc to
         // bierzemy wszystkie ktorych trafil, i usuwamy najblizszego., przekazujemy strumien do usuwania.
@@ -89,8 +94,9 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
                 .max(Comparator.comparingDouble(Sprite::getScale))
                 .ifPresent(sprite -> {
                     spriteList.remove(sprite);
-                    label.setText("Wynik: " + ++licznik);
+                    killed++;
                 });
+        label.setText("Wynik: " + killed + " Celnosc: " + 100*killed/shotCounter + "%");
     }
 
     class AnimationThread extends Thread{
@@ -104,7 +110,8 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
                 try {
                     sleep(1000 / FPS);  // 30 klatek na sekundę
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+//                    e.printStackTrace();
+                    break;
                 }
             }
         }

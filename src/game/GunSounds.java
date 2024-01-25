@@ -27,7 +27,8 @@ public class GunSounds implements CrossHairListener, Runnable{
             shot.start();
             Thread.sleep(shot.getMicrosecondLength() / 1_000_000);
         } catch (InterruptedException | LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-            throw new RuntimeException(e);
+            System.err.println("Problem z dzwiekiem, onShotsFired");
+            e.printStackTrace();
         }
     }
 
@@ -38,7 +39,8 @@ public class GunSounds implements CrossHairListener, Runnable{
                 try {
                     wait(); // czeka na powiadomienie
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+//                    e.printStackTrace();
+                    break;
                 }
             }
         }

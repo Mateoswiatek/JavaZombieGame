@@ -9,6 +9,7 @@ import java.util.Random;
  * Spirite Holders -przechowuje jeden typ obiektow, ma wlasna ich fabryke, albo wgl zrobic to abkstrakcyjnie.
  */
 public class SpiriteHolders {
+    public static int MAX_SPIRITES;
     SpriteFactory spriteFactory;
     //TODO zamiast listy, zrobić słownik, i tutaj zrobić schedule tworzenia, tutaj też ma być jakaś lista fabryk?
     // Tak aby można było z jednego miejsca zarządzać wszystkimi obiektami które są produkowane
@@ -21,7 +22,7 @@ public class SpiriteHolders {
 
     public void spawnSpirite() {
         synchronized (spriteList) {
-            spriteList.add(spriteFactory.newSprite(1000, random.nextInt(400, 550))); //800 512
+            if(spriteList.size() < MAX_SPIRITES) spriteList.add(spriteFactory.newSprite(1000, random.nextInt(400, 550)));
         }
     }
 }

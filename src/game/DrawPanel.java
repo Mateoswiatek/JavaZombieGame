@@ -46,15 +46,17 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
         Graphics2D g2d = (Graphics2D) g;
         g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
         synchronized (spriteList) {
-            spriteList.forEach(x -> x.draw(g2d, this));
-            System.out.println(spriteList.size());
-            spriteList.forEach(x -> System.out.println(x.isVisble()));
-            spriteList.removeIf(x -> !x.isVisble());
+//            spriteList.forEach(x -> x.draw(g2d, this));
+//            System.out.println(spriteList.size());
+//            spriteList.forEach(x -> System.out.println(x.isVisble()));
+//            spriteList.removeIf(x -> !x.isVisble());
             //TODO tutaj to ustaic jesli isVisible dobrze dziala
-        /*spriteList.removeIf(sprite -> {
-            sprite.draw(g2d, this);
-            return !sprite.isVisble(); // usuwa jesli jest false
-        });*/
+
+            // TODO animacja smierci, dodac do tej metody przed usunieciem co jest wolana dla kazdego obiektu w Javie.
+            spriteList.removeIf(sprite -> {
+                sprite.draw(g2d, this);
+                return !sprite.isVisble(); // usuwa jesli jest false
+            });
 
         }
         //TODO to jest do wywalenia

@@ -12,16 +12,20 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+//TODO dodać po lewej stornie jakas postac, jakiegos bohatera czy cos. aby on strzel, aby mial jakas bron (skorke broni) i aby ona sie obracala tam gdzie jest celownik.
+// I w tedy np zrobic jakas bariere po lewej stronie, jakis domek, i jesli zoombie wejdzie w domek to gracz obrywa.
 public class Main {
     public final static int backgroundWIDTH = 1000;
     public final static int backgroundHEIGHT = 700;
-    public static void main(String[] args) {
+    public static int MAX_SPIRITES = 5;
+    public static void main(String[] args) throws InterruptedException {
         //TODO dodać Zombie Factory do SpiritHoldera, o albo SpiritHolder ma funkcje dodajaca kolejna fabrykę, przyjmuje nazwę klasy i dodaje instancję do jakiejś listy czy coś
         // i w tedy do schedduledExecutor można dawać kolejne funkcje ktore maja sie wolac.
         ZombieFactory zombieFactory = ZombieFactory.getInstance("../resources/walkingdead.png");
         CrossHair crossHair = new CrossHair();
 
         // Przerobić na liste list, lub na jakiś słownik, gdzie mamy klay, tak aby np Game.DrawPanel mógł rysować wszystkie obiekty
+        SpiriteHolders.MAX_SPIRITES = MAX_SPIRITES;
         List<Sprite> spriteList = new ArrayList<>();
         SpiriteHolders spawnSpirite = new SpiriteHolders(zombieFactory, spriteList);
 
@@ -44,6 +48,13 @@ public class Main {
         frame.setResizable(true);
         frame.setVisible(true);
 
+        // czy na pewno jest przekazywana wszedzie referencja do listy
+        /*
+        while(true){
+            Thread.sleep(100);
+            System.out.println(spriteList.size());
+        }
+        */
     }
 
 

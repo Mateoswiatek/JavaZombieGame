@@ -10,6 +10,7 @@ public class Zombie implements  Sprite{
     BufferedImage tape;
     int x;
     int y;
+    int real_width;
     double scale = 1;
 
     int index = 0;  // numer wyświetlanego obrazka
@@ -29,6 +30,7 @@ public class Zombie implements  Sprite{
         this.y = y;
         this.scale = scale;
         this.tape = tape; // ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/walkingdead.png")));
+        this.real_width = (int)(WIDTH * scale)+1; // +1 tak orientacyjnie, na wszelki wypadek
     }
 
 
@@ -55,7 +57,9 @@ public class Zombie implements  Sprite{
     }
     @Override
     public boolean isVisble() {
-        return x > 400; // Main.backgroundWIDTH;
+//        System.out.println(real_width);
+//        System.out.println("x = " + x);
+        return x > -real_width; // kiedy caly wyjdzie poza ramke lewa. lewa ramka jest na 0
     }
     @Override
     public boolean isCloser(Sprite other) {

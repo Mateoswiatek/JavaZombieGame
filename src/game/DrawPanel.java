@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 
 public class DrawPanel  extends JPanel implements CrossHairListener {
@@ -50,7 +51,6 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
 //            System.out.println(spriteList.size());
 //            spriteList.forEach(x -> System.out.println(x.isVisble()));
 //            spriteList.removeIf(x -> !x.isVisble());
-            //TODO tutaj to ustaic jesli isVisible dobrze dziala
 
             // TODO animacja smierci, dodac do tej metody przed usunieciem co jest wolana dla kazdego obiektu w Javie.
             spriteList.removeIf(sprite -> {
@@ -65,10 +65,16 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
 
     @Override
     public void onShotsFired(int x, int y) {
-//        System.out.println("DrawPanel dostal informacje o strzale! w x,y = " + x + ", " + y);
+        //System.out.println("DrawPanel dostal informacje o strzale! w x,y = " + x + ", " + y);
         //TODO dokonczyc to
         // bierzemy wszystkie ktorych trafil, i usuwamy najblizszego., przekazujemy strumien do usuwania.
-        //spriteList.stream().min()
+        // Jesli nie znajdzie takiego jakiego trafilismy, to nulla, nic nie usunie, pytanie czy przeszukuje jesl ma usunac nulla?
+
+        spriteList.stream().filter(sprite -> sprite.isHit(x, y)).forEach(sprite -> System.out.println("trafiono"));
+
+        // Które działa szybciej???
+        //spriteList.remove(spriteList.stream().filter(sprite -> sprite.isHit(x, y)).min(Comparator.comparingDouble(Sprite::getScale)).orElse(null));
+        spriteList.stream().filter(sprite -> sprite.isHit(x, y)).min(Comparator.comparingDouble(Sprite::getScale)).ifPresent(spriteList::remove);
     }
 
     class AnimationThread extends Thread{

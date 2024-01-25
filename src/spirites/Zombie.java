@@ -11,11 +11,12 @@ public class Zombie implements  Sprite{
     int x;
     int y;
     int real_width;
+    int real_heiegt;
     double scale = 1;
 
     int index = 0;  // numer wyświetlanego obrazka
-    int HEIGHT = 312; // z rysunku;
-    int WIDTH = 200; // z rysunku;
+    public static int HEIGHT = 312; // z rysunku;
+    public static int WIDTH = 200; // z rysunku;
 
     /*
     public Zombie(int x, int y, double scale) {
@@ -30,7 +31,8 @@ public class Zombie implements  Sprite{
         this.y = y;
         this.scale = scale;
         this.tape = tape; // ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/walkingdead.png")));
-        this.real_width = (int)(WIDTH * scale)+1; // +1 tak orientacyjnie, na wszelki wypadek
+        this.real_width = (int) (WIDTH * scale); // +1 tak orientacyjnie, na wszelki wypadek
+        this.real_heiegt = (int) (HEIGHT * scale);
     }
 
 
@@ -44,7 +46,12 @@ public class Zombie implements  Sprite{
     @Override
     public void draw(Graphics g, JPanel parent) {
         Image img = tape.getSubimage(WIDTH * index, 0, WIDTH, HEIGHT); // pobierz klatkę
-        g.drawImage(img, x, y - (int) (HEIGHT * scale) / 2, (int) (WIDTH * scale), (int) (HEIGHT * scale), parent);
+//        g.drawImage(img, x, y - (int) (HEIGHT * scale) / 2, (int) (WIDTH * scale), (int) (HEIGHT * scale), parent);
+        g.drawImage(img, x, y, (int) (WIDTH * scale), (int) (HEIGHT * scale), parent);
+        g.drawRect(x, y, real_width, real_heiegt);
+
+        int dotSize = 50; // Rozmiar kropki
+        g.fillOval(x - dotSize/2, y - dotSize/2, dotSize, dotSize);
     }
 
     /**
@@ -64,6 +71,15 @@ public class Zombie implements  Sprite{
     @Override
     public boolean isCloser(Sprite other) {
         return this.scale > other.getScale();
+    }
+
+    @Override
+    public boolean isHit(int _x, int _y) {
+//        System.out.println("x_ = " + _x + " y_ = " + _y);
+//        System.out.println("x  = " + x + " y  = " + y);
+        // System.out.println("xr  = " + (x+real_width) + " yr = " + (y+real_heiegt));
+
+        return (x < _x && _x < x+real_width) && (y < _y && _y < y+real_heiegt);
     }
 
     @Override

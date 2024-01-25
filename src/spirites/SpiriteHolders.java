@@ -22,7 +22,10 @@ public class SpiriteHolders {
 
     public void spawnSpirite() {
         synchronized (spriteList) {
-            if(spriteList.size() < MAX_SPIRITES) spriteList.add(spriteFactory.newSprite(1000, random.nextInt(400, 550)));
+            double scale = random.nextDouble(2);
+            // zawsze ponad linia horyzonut (1000, 460-(int)(scale*Zombie.HEIGHT), scale)));
+            // Dotykaja ziemi dolnej: (1000, 680-(int)(scale*Zombie.HEIGHT), scale));
+            if(spriteList.size() < MAX_SPIRITES) spriteList.add(spriteFactory.newSprite(1000, random.nextInt(460-(int)(scale*Zombie.HEIGHT), 680-(int)(scale*Zombie.HEIGHT)), scale)); // random.nextInt(460-(int)(scale*Zombie.HEIGHT), 700-(int)(scale*Zombie.HEIGHT)
         }
     }
 }

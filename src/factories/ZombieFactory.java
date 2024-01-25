@@ -55,8 +55,7 @@ public class ZombieFactory implements SpriteFactory{
 
 
     @Override
-    public Sprite newSprite(int x, int y) {
-        double scale = random.nextDouble(2);
+    public Sprite newSprite(int x, int y, double scale) {
         return new Zombie(x, y, scale, tape);
     }
 }

@@ -2,6 +2,7 @@ package spirites;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Comparator;
 
 public interface Sprite {
     /**
@@ -37,7 +38,7 @@ public interface Sprite {
      * @param other
      * @return
      */
-    default boolean isCloser(Sprite other){return false;}
+    default boolean isCloser(Sprite other){return this.getScale() > other.getScale();}
 
     default double getScale() {
         return 1.0;

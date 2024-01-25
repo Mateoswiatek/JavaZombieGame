@@ -38,6 +38,7 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
 
         //TODO to jest do wywalenia
         this.crossHair = crossHair.setDrawPanel(this);
+
         this.spriteList = spriteList;
         try {
             background = ImageIO.read(backgroundImagageURL);
@@ -45,11 +46,6 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
             e.printStackTrace();
         }
         new AnimationThread().start();
-
-        // Zrobione w celowniku, bo to celownik okrela tak nparwde co chce robic?
-        // dodawanie naszego obiektu jako Listener
-//        this.addMouseMotionListener(crossHair);
-//        this.addMouseListener(crossHair);
     }
     @Override
     public void paintComponent(Graphics g) {
@@ -90,7 +86,7 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
         //spriteList.remove(spriteList.stream().filter(sprite -> sprite.isHit(x, y)).min(Comparator.comparingDouble(Sprite::getScale)).orElse(null));
         spriteList.stream()
                 .filter(sprite -> sprite.isHit(x, y))
-                .min(Comparator.comparingDouble(Sprite::getScale))
+                .max(Comparator.comparingDouble(Sprite::getScale))
                 .ifPresent(sprite -> {
                     spriteList.remove(sprite);
                     label.setText("Wynik: " + ++licznik);
@@ -100,7 +96,7 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
     class AnimationThread extends Thread{
         @Override
         public void run() {
-            for (int i = 0; ; i++) {
+            for (;;) {
                 synchronized (spriteList){
                     spriteList.forEach(Sprite::next);
                 }

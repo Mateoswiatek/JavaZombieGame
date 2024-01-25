@@ -29,3 +29,4 @@ public class SpiriteHolders {
         }
     }
 }
+//TODO zrobić listę sortowaną, w tedy usuwamy pierwszy element, ten ktory jest najbliższy, trafiony, w tedy szukamy dla którego jest spełnione isHit i tego usuwamy, i dalej ie musimy szukać

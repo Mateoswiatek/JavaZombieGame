@@ -2,9 +2,8 @@ package spirites;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Comparator;
 
-public interface Sprite {
+public interface Spirites {
     /**
      * Rysuje postać
      * @param g
@@ -38,7 +37,7 @@ public interface Sprite {
      * @param other
      * @return
      */
-    default boolean isCloser(Sprite other){return this.getScale() > other.getScale();}
+    default boolean isCloser(Spirites other){return this.getScale() > other.getScale();}
 
     default double getScale() {
         return 1.0;

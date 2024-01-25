@@ -6,11 +6,9 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
-//TODO dodać GunSounds jako lissenera przy zmianie broni, i w tedy ma zmienić dźwięk.
 public class GunSounds implements CrossHairListener, Runnable{
     File soundFile;
     AudioInputStream audioInputStream;
-
     private volatile boolean running = true;
     public GunSounds(String filePath){
         soundFile = new File(filePath);
@@ -18,7 +16,7 @@ public class GunSounds implements CrossHairListener, Runnable{
 
     @Override
     public void onShotsFired(int x, int y) {
-//        System.out.println("Bum Bum!");
+//System.out.println("Bum Bum!");
         try {
             audioInputStream = AudioSystem.getAudioInputStream(soundFile);
 

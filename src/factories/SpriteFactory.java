@@ -1,7 +1,7 @@
 package factories;
 
-import spirites.Sprite;
+import spirites.Spirites;
 
 public interface SpriteFactory {
-    Sprite newSprite(int x, int y, double scale);
+    Spirites newSprite(int x, int y, double scale);
 }

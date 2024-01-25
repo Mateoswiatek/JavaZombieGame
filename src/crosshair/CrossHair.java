@@ -1,50 +1,41 @@
 package crosshair;
 
 import game.DrawPanel;
-import java.util.List;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.IOException;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.io.IOException;
 
-//TODO zamiana z wyswietlania jako elementu draw, zamienic na obrazek, latwiej bedzie i mniej zdarzen bo nie trzeba za kazdym razem przemalowywac
 public class CrossHair implements MouseMotionListener, MouseListener {
-
-    DrawPanel parent;
     Cursor normalCursor;
-    Cursor fireCursor;
-    int x;
-    int y;
-    boolean activated = false;
+    Cursor shotCursor;
+    int x, y;
+//    boolean activated = false; // czy jest aktywny, do dalszego rozwoju ?
+    private DrawPanel parent;
 
-    // Zmienilem, aby nie bylo zaleznosci, bo przeciez moga byc rozne celowniki
     public CrossHair() {
         Image normalCursorImage;
-        Image fireCursorImage;
-
-        // TODO skorka celownika, ewentualnie dwie skorki, wgl to mozna to rowniez rozbic na bronie, aby celownik byl czescia broni, lista dostepnych broni, kazdy wgrywa swoj celownik i inne rzeczy
-        // TODO dodać metodę zmiany celownika -> kwestia załadowania innego pliku, ewentualnie jakieś skalowanie.
+        Image shotCursorImage;
         try {
             normalCursorImage = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/crosshair1_normal_32.png")));
-            fireCursorImage = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/crosshair1_fire_32.png")));
+            shotCursorImage = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/crosshair1_fire_32.png")));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
 
         int xNormmal = normalCursorImage.getWidth(null);
         int yNormal = normalCursorImage.getHeight(null);
-        int xFire = fireCursorImage.getWidth(null);
-        int yFire = fireCursorImage.getHeight(null);
+        int xShot = shotCursorImage.getWidth(null);
+        int yShot = shotCursorImage.getHeight(null);
         normalCursor = Toolkit.getDefaultToolkit().createCustomCursor(normalCursorImage , new Point(xNormmal/2, yNormal/2), "cursor"); // miejsce przyłożenia wzgledem obrazka
-        fireCursor = Toolkit.getDefaultToolkit().createCustomCursor(fireCursorImage , new Point(xFire/2, yFire/2), "cursor"); // miejsce przyłożenia wzgledem obrazka
-
+        shotCursor = Toolkit.getDefaultToolkit().createCustomCursor(shotCursorImage , new Point(xShot/2, yShot/2), "cursor"); // miejsce przyłożenia wzgledem obrazka
     }
-
-    //TODO dodać dźwięki, zmniejszanie amunicji, inne rzeczy
     List<CrossHairListener> listeners = new ArrayList<>();
     public void addCrossHairListener(CrossHairListener e){
         listeners.add(e);
@@ -53,17 +44,57 @@ public class CrossHair implements MouseMotionListener, MouseListener {
         for(var e:listeners)
             e.onShotsFired(x,y);
     }
+    @Override
+    public void mousePressed(MouseEvent e) {
+//System.out.println("W celowniku x,y = " + x + ", " + y);
+        x = e.getX();
+        y = e.getY();
+//        activated = true;
+        notifyListeners();
+    }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+//        System.out.println("Zwolniono");
+//        activated = false;
+    }
+    @Override
+    public void mouseMoved(MouseEvent e) {}
+    @Override
+    public void mouseDragged(MouseEvent e) {}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        parent.setCursor(normalCursor);
+    }
+    @Override
+    public void mouseExited(MouseEvent e) {
+//        System.out.println("wyszlismy");
+    }
+    @Override
+    public void mouseClicked(MouseEvent e) {}
 
-    // TODO to jest do wywalenia
+    public void setDrawPanel(DrawPanel drawPanel) {
+        this.parent = drawPanel;
+        parent.addMouseMotionListener(this);
+        parent.addMouseListener(this);
+    }
+}
+
+// Ukrycie całkowicie kursora
+/*
+        byte[]imageByte=new byte[0];
+        cursorImage=Toolkit.getDefaultToolkit().createImage(imageByte);
+        myCursor=Toolkit.getDefaultToolkit().createCustomCursor(cursorImage,new Point(0,0),"cursor");
+        parent.setCursor(cursorImage);
+*/
+
+    /*
     public CrossHair setDrawPanel(DrawPanel parent){
         this.parent = parent;
         parent.addMouseMotionListener(this);
         parent.addMouseListener(this);
         return this;
     }
-    //TODO to tez jest do wywalenia
     public void draw(Graphics g){
-/*
         if(activated)g.setColor(Color.RED);
         else g.setColor(Color.WHITE);
 
@@ -79,66 +110,8 @@ public class CrossHair implements MouseMotionListener, MouseListener {
 
         g2d.drawLine(0, -crossSize, 0, -crossSizeSpace); // Linia pionowa1
         g2d.drawLine(0, crossSizeSpace, 0, crossSize); // Linia pionowa2
-*/
 
         // Prosty celownik
 //        g.drawOval(x-20, y-20, 40, 40);
     }
-    @Override
-    public void mousePressed(MouseEvent e) {
-//        System.out.println("Nacisnieto");
-        // tutaj jakis licznik w zaleznosci od uzywanej broni, np ze nie mozna zbyt czesto uzywac, takie jakby przeladowanie.
-
-        // Dopiero tutaj pobieramy polozenie myszki, o wiele bardziej wydajne ???
-        parent.setCursor(fireCursor);
-        x = e.getX();
-        y = e.getY();
-
-//System.out.println("W celowniku x,y = " + x + ", " + y);
-
-        activated = true;
-        notifyListeners();
-    }
-    @Override
-    public void mouseReleased(MouseEvent e) {
-//        System.out.println("Zwolniono");
-
-        parent.setCursor(normalCursor);
-        activated = false;
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-//        x = e.getX();
-//        y = e.getY();
-//        parent.repaint();
-    }
-    @Override
-    public void mouseDragged(MouseEvent e) {
-//        x = e.getX();
-//        y = e.getY();
-//        parent.repaint();
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-//        System.out.println("jestemy wewnatrz");
-
-        // Ukrycie całkowicie kursora
-/*
-        byte[]imageByte=new byte[0];
-        cursorImage=Toolkit.getDefaultToolkit().createImage(imageByte);
-        myCursor=Toolkit.getDefaultToolkit().createCustomCursor(cursorImage,new Point(0,0),"cursor");
-        parent.setCursor(cursorImage);
-*/
-
-        // kursor jako celownik domyslny
-        parent.setCursor(normalCursor);
-    }
-    @Override
-    public void mouseExited(MouseEvent e) {
-//        System.out.println("wyszlismy");
-    }
-    @Override
-    public void mouseClicked(MouseEvent e) {}
-}
+    */

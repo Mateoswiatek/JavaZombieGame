@@ -13,20 +13,19 @@ public class SpiriteHolders {
     SpriteFactory spriteFactory;
     //TODO zamiast listy, zrobić słownik, i tutaj zrobić schedule tworzenia, tutaj też ma być jakaś lista fabryk?
     // Tak aby można było z jednego miejsca zarządzać wszystkimi obiektami które są produkowane
-    final List<Sprite> spriteList;
+    final List<Spirites> spiritesList;
     Random random = new Random();
-    public SpiriteHolders(SpriteFactory spriteFactory, List<Sprite> spriteList){
+    public SpiriteHolders(SpriteFactory spriteFactory, List<Spirites> spiritesList){
         this.spriteFactory = spriteFactory;
-        this.spriteList = spriteList;
+        this.spiritesList = spiritesList;
     }
 
     public void spawnSpirite() {
-        synchronized (spriteList) {
+        synchronized (spiritesList) {
             double scale = random.nextDouble(0.5, 2);
             // zawsze ponad linia horyzonut (1000, 460-(int)(scale*Zombie.HEIGHT), scale)));
             // Dotykaja ziemi dolnej: (1000, 680-(int)(scale*Zombie.HEIGHT), scale));
-            if(spriteList.size() < MAX_SPIRITES) spriteList.add(spriteFactory.newSprite(1000, random.nextInt(460-(int)(scale*Zombie.HEIGHT), 680-(int)(scale*Zombie.HEIGHT)), scale)); // random.nextInt(460-(int)(scale*Zombie.HEIGHT), 700-(int)(scale*Zombie.HEIGHT)
+            if(spiritesList.size() < MAX_SPIRITES) spiritesList.add(spriteFactory.newSprite(1000, random.nextInt(460-(int)(scale*Zombie.HEIGHT), 680-(int)(scale*Zombie.HEIGHT)), scale));
         }
     }
 }
-//TODO zrobić listę sortowaną, w tedy usuwamy pierwszy element, ten ktory jest najbliższy, trafiony, w tedy szukamy dla którego jest spełnione isHit i tego usuwamy, i dalej ie musimy szukać

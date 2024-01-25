@@ -1,25 +1,18 @@
 package factories;
 
-import spirites.Sprite;
+import spirites.Spirites;
 import spirites.Zombie;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Random;
-
 /**
  * Jest Singletonem
  */
-//TODO dodać jakieś parametry tylko dla zoombie, ewentualnie ogólnie jakieś inne interfejsy np dźwięk czy coś.
 public class ZombieFactory implements SpriteFactory{
     public static String defaultPathToImage = "../resources/walkingdead.png";
     BufferedImage tape;
-    Random random = new Random();
-
-
-    // Normalny sposób Singleton-a
     private static ZombieFactory instance;
     public static ZombieFactory getInstance(){
         if(instance == null) instance = new ZombieFactory(defaultPathToImage);
@@ -29,7 +22,18 @@ public class ZombieFactory implements SpriteFactory{
         if(instance == null) defaultPathToImage = customPathToImage;
         return getInstance();
     }
-
+    private ZombieFactory(String pathToImage) {
+        try {
+            tape = ImageIO.read(Objects.requireNonNull(getClass().getResource(pathToImage)));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public Spirites newSprite(int x, int y, double scale) {
+        return new Zombie(x, y, scale, tape);
+    }
+}
 
 /*
     // czy można tak przekazywać parametry ? tutaj pathToImage
@@ -45,17 +49,3 @@ public class ZombieFactory implements SpriteFactory{
         return getInstance();
     }
  */
-    private ZombieFactory(String pathToImage) {
-        try {
-            tape = ImageIO.read(Objects.requireNonNull(getClass().getResource(pathToImage)));
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
-
-    @Override
-    public Sprite newSprite(int x, int y, double scale) {
-        return new Zombie(x, y, scale, tape);
-    }
-}

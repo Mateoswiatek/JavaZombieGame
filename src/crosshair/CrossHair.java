@@ -94,7 +94,7 @@ public class CrossHair implements MouseMotionListener, MouseListener {
         x = e.getX();
         y = e.getY();
 
-System.out.println("W celowniku x,y = " + x + ", " + y);
+//System.out.println("W celowniku x,y = " + x + ", " + y);
 
         activated = true;
         notifyListeners();

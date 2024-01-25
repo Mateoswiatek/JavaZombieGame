@@ -21,8 +21,17 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
     //TODO to jest do wywalenia celnik
     // Tutaj tylko ustawiamy ze ten obiekt bedzie wyswietal celownik, bo sam celownik moze byc modyfikowany i ustawiany zupelnie niezaleznie.
     CrossHair crossHair;
-
+    private JLabel label;
+    int licznik;
     public DrawPanel(URL backgroundImagageURL, CrossHair crossHair, int fps, List<Sprite> spriteList) {
+        label = new JLabel("Wynik: " + licznik);
+        label.setForeground(Color.BLACK);
+        Font font = label.getFont();
+        label.setFont(new Font(font.getName(), font.getStyle(), 30));
+
+        setLayout(new BorderLayout());
+        add(label, BorderLayout.NORTH);
+
         this.FPS = fps;
         // nie musimy zapisywać informacji na stale o celowniku.
         crossHair.addCrossHairListener(this);
@@ -55,10 +64,15 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
             // TODO animacja smierci, dodac do tej metody przed usunieciem co jest wolana dla kazdego obiektu w Javie.
             spriteList.removeIf(sprite -> {
                 sprite.draw(g2d, this);
+                if(!sprite.isVisble()) label.setText("Wynik: " + --licznik);
                 return !sprite.isVisble(); // usuwa jesli jest false
             });
 
         }
+
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, 170, 40);
+
         //TODO to jest do wywalenia
         crossHair.draw(g2d);
     }
@@ -70,11 +84,17 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
         // bierzemy wszystkie ktorych trafil, i usuwamy najblizszego., przekazujemy strumien do usuwania.
         // Jesli nie znajdzie takiego jakiego trafilismy, to nulla, nic nie usunie, pytanie czy przeszukuje jesl ma usunac nulla?
 
-        spriteList.stream().filter(sprite -> sprite.isHit(x, y)).forEach(sprite -> System.out.println("trafiono"));
+//        spriteList.stream().filter(sprite -> sprite.isHit(x, y)).forEach(sprite -> System.out.println("trafiono"));
 
         // Które działa szybciej???
         //spriteList.remove(spriteList.stream().filter(sprite -> sprite.isHit(x, y)).min(Comparator.comparingDouble(Sprite::getScale)).orElse(null));
-        spriteList.stream().filter(sprite -> sprite.isHit(x, y)).min(Comparator.comparingDouble(Sprite::getScale)).ifPresent(spriteList::remove);
+        spriteList.stream()
+                .filter(sprite -> sprite.isHit(x, y))
+                .min(Comparator.comparingDouble(Sprite::getScale))
+                .ifPresent(sprite -> {
+                    spriteList.remove(sprite);
+                    label.setText("Wynik: " + ++licznik);
+                });
     }
 
     class AnimationThread extends Thread{

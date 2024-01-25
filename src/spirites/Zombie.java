@@ -50,7 +50,7 @@ public class Zombie implements  Sprite{
         g.drawImage(img, x, y, (int) (WIDTH * scale), (int) (HEIGHT * scale), parent);
         g.drawRect(x, y, real_width, real_heiegt);
 
-        int dotSize = 50; // Rozmiar kropki
+        int dotSize = 10; // Rozmiar kropki
         g.fillOval(x - dotSize/2, y - dotSize/2, dotSize, dotSize);
     }
 

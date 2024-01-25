@@ -1,20 +1,20 @@
-package CrossHair;
+package crosshair;
 
-import Game.DrawPanel;
-
+import game.DrawPanel;
+import java.util.List;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 //TODO zamiana z wyswietlania jako elementu draw, zamienic na obrazek, latwiej bedzie i mniej zdarzen bo nie trzeba za kazdym razem przemalowywac
 public class CrossHair implements MouseMotionListener, MouseListener {
 
     DrawPanel parent;
-
     Cursor normalCursor;
     Cursor fireCursor;
     int x;
@@ -43,12 +43,25 @@ public class CrossHair implements MouseMotionListener, MouseListener {
         fireCursor = Toolkit.getDefaultToolkit().createCustomCursor(fireCursorImage , new Point(xFire/2, yFire/2), "cursor"); // miejsce przyłożenia wzgledem obrazka
 
     }
+
+    //TODO dodać dźwięki, zmniejszanie amunicji, inne rzeczy
+    List<CrossHairListener> listeners = new ArrayList<>();
+    public void addCrossHairListener(CrossHairListener e){
+        listeners.add(e);
+    }
+    void notifyListeners(){
+        for(var e:listeners)
+            e.onShotsFired(x,y);
+    }
+
+    // TODO to jest do wywalenia
     public CrossHair setDrawPanel(DrawPanel parent){
         this.parent = parent;
         parent.addMouseMotionListener(this);
         parent.addMouseListener(this);
         return this;
     }
+    //TODO to tez jest do wywalenia
     public void draw(Graphics g){
 /*
         if(activated)g.setColor(Color.RED);
@@ -73,21 +86,22 @@ public class CrossHair implements MouseMotionListener, MouseListener {
     }
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println("Nacisnieto");
-
+//        System.out.println("Nacisnieto");
         // tutaj jakis licznik w zaleznosci od uzywanej broni, np ze nie mozna zbyt czesto uzywac, takie jakby przeladowanie.
+
+        // Dopiero tutaj pobieramy polozenie myszki, o wiele bardziej wydajne ???
         parent.setCursor(fireCursor);
         x = e.getX();
         y = e.getY();
-        System.out.println("x= " + x);
-        System.out.println("y= " + y);
 
-        // Dopiero tutaj pobieramy polozenie myszki, o wiele bardziej wydajne ???
+System.out.println("W celowniku x,y = " + x + ", " + y);
+
         activated = true;
+        notifyListeners();
     }
     @Override
     public void mouseReleased(MouseEvent e) {
-        System.out.println("Zwolniono");
+//        System.out.println("Zwolniono");
 
         parent.setCursor(normalCursor);
         activated = false;
@@ -108,7 +122,7 @@ public class CrossHair implements MouseMotionListener, MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        System.out.println("jestemy wewnatrz");
+//        System.out.println("jestemy wewnatrz");
 
         // Ukrycie całkowicie kursora
 /*
@@ -122,7 +136,9 @@ public class CrossHair implements MouseMotionListener, MouseListener {
         parent.setCursor(normalCursor);
     }
     @Override
-    public void mouseExited(MouseEvent e) {System.out.println("wyszlismy");}
+    public void mouseExited(MouseEvent e) {
+//        System.out.println("wyszlismy");
+    }
     @Override
     public void mouseClicked(MouseEvent e) {}
 }

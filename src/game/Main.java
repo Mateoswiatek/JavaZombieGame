@@ -1,6 +1,6 @@
-package Game;
+package game;
 
-import CrossHair.CrossHair;
+import crosshair.CrossHair;
 import spirites.SpiriteHolders;
 import spirites.Sprite;
 import factories.ZombieFactory;
@@ -24,7 +24,7 @@ public class Main {
 
 
         JFrame frame = new JFrame("Zombie");
-        DrawPanel panel = new DrawPanel(Main.class.getResource("/resources/tlo.jpg"), crossHair, 30, spriteList );
+        DrawPanel panel = new DrawPanel(Main.class.getResource("/resources/tlo.jpg"), crossHair, 30, spriteList);
 
         //TODO zamienic wyswietlanie tez na zegarowe. tak samo jak robimy spawnowanie, to zroibc uaktualnianie
         // był problem, bo wołało się przed utworzeniem klasy.
@@ -48,8 +48,8 @@ public class Main {
 /*
 zastosowane wzorce:
 - Factory - tworzenie obiektów
-- Singleton  - przy tworzeniu fabryk.
-- Observer Obserwator - Celownik
+- Singleton - przy tworzeniu fabryk.
+- Observer - Celownik
 
 
 

@@ -1,6 +1,7 @@
-package Game;
+package game;
 
-import CrossHair.CrossHair;
+import crosshair.CrossHair;
+import crosshair.CrossHairListener;
 import spirites.Sprite;
 
 import javax.imageio.ImageIO;
@@ -11,15 +12,21 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-public class DrawPanel  extends JPanel {
+public class DrawPanel  extends JPanel implements CrossHairListener {
     BufferedImage background;
     int FPS = 30;
     final List<Sprite> spriteList;
+
+    //TODO to jest do wywalenia celnik
     // Tutaj tylko ustawiamy ze ten obiekt bedzie wyswietal celownik, bo sam celownik moze byc modyfikowany i ustawiany zupelnie niezaleznie.
     CrossHair crossHair;
 
     public DrawPanel(URL backgroundImagageURL, CrossHair crossHair, int fps, List<Sprite> spriteList) {
         this.FPS = fps;
+        // nie musimy zapisywać informacji na stale o celowniku.
+        crossHair.addCrossHairListener(this);
+
+        //TODO to jest do wywalenia
         this.crossHair = crossHair.setDrawPanel(this);
         this.spriteList = spriteList;
         try {
@@ -39,7 +46,14 @@ public class DrawPanel  extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
         spriteList.forEach(x -> x.draw(g2d, this));
+
+        //TODO to jest do wywalenia
         crossHair.draw(g2d);
+    }
+
+    @Override
+    public void onShotsFired(int x, int y) {
+        System.out.println("DrawPanel dostal informacje o strzale! w x,y = " + x + ", " + y);
     }
 
     class AnimationThread extends Thread{

@@ -1,16 +1,15 @@
 package spirites;
 
-import javax.imageio.ImageIO;
+import game.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
 
 public class Zombie implements  Sprite{
     BufferedImage tape;
-    int x = 500;
-    int y = 500;
+    int x;
+    int y;
     double scale = 1;
 
     int index = 0;  // numer wyświetlanego obrazka
@@ -29,11 +28,7 @@ public class Zombie implements  Sprite{
         this.x = x;
         this.y = y;
         this.scale = scale;
-        try {
-            this.tape = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/walkingdead.png")));
-        } catch( IOException e){
-            e.printStackTrace();
-        }
+        this.tape = tape; // ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/walkingdead.png")));
     }
 
 
@@ -58,12 +53,10 @@ public class Zombie implements  Sprite{
         x -= 5 * scale;
         index = (index + 1) % 10;
     }
-
     @Override
     public boolean isVisble() {
-        return true;
+        return x > 400; // Main.backgroundWIDTH;
     }
-
     @Override
     public boolean isCloser(Sprite other) {
         return this.scale > other.getScale();

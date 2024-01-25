@@ -1,6 +1,5 @@
 package spirites;
 
-import spirites.Sprite;
 import factories.SpriteFactory;
 
 import java.util.List;
@@ -11,6 +10,8 @@ import java.util.Random;
  */
 public class SpiriteHolders {
     SpriteFactory spriteFactory;
+    //TODO zamiast listy, zrobić słownik, i tutaj zrobić schedule tworzenia, tutaj też ma być jakaś lista fabryk?
+    // Tak aby można było z jednego miejsca zarządzać wszystkimi obiektami które są produkowane
     final List<Sprite> spriteList;
     Random random = new Random();
     public SpiriteHolders(SpriteFactory spriteFactory, List<Sprite> spriteList){

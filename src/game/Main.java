@@ -13,8 +13,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
+    public final static int backgroundWIDTH = 1000;
+    public final static int backgroundHEIGHT = 700;
     public static void main(String[] args) {
-
+        //TODO dodać Zombie Factory do SpiritHoldera, o albo SpiritHolder ma funkcje dodajaca kolejna fabrykę, przyjmuje nazwę klasy i dodaje instancję do jakiejś listy czy coś
+        // i w tedy do schedduledExecutor można dawać kolejne funkcje ktore maja sie wolac.
         ZombieFactory zombieFactory = ZombieFactory.getInstance("../resources/walkingdead.png");
         CrossHair crossHair = new CrossHair();
 
@@ -28,12 +31,14 @@ public class Main {
 
         //TODO zamienic wyswietlanie tez na zegarowe. tak samo jak robimy spawnowanie, to zroibc uaktualnianie
         // był problem, bo wołało się przed utworzeniem klasy.
+        // Przeniesc do zombie factory ??? ewentualnie do Spirit Holders?
+        // albo wgl zrobić listę
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleAtFixedRate(spawnSpirite::spawnSpirite, 0, 2, TimeUnit.SECONDS);
 
 
         frame.setContentPane(panel);
-        frame.setSize(1000, 700);
+        frame.setSize(backgroundWIDTH, backgroundHEIGHT);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setResizable(true);

@@ -45,15 +45,28 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
-        spriteList.forEach(x -> x.draw(g2d, this));
+        synchronized (spriteList) {
+            spriteList.forEach(x -> x.draw(g2d, this));
+            System.out.println(spriteList.size());
+            spriteList.forEach(x -> System.out.println(x.isVisble()));
+            spriteList.removeIf(x -> !x.isVisble());
+            //TODO tutaj to ustaic jesli isVisible dobrze dziala
+        /*spriteList.removeIf(sprite -> {
+            sprite.draw(g2d, this);
+            return !sprite.isVisble(); // usuwa jesli jest false
+        });*/
 
+        }
         //TODO to jest do wywalenia
         crossHair.draw(g2d);
     }
 
     @Override
     public void onShotsFired(int x, int y) {
-        System.out.println("DrawPanel dostal informacje o strzale! w x,y = " + x + ", " + y);
+//        System.out.println("DrawPanel dostal informacje o strzale! w x,y = " + x + ", " + y);
+        //TODO dokonczyc to
+        // bierzemy wszystkie ktorych trafil, i usuwamy najblizszego., przekazujemy strumien do usuwania.
+        //spriteList.stream().min()
     }
 
     class AnimationThread extends Thread{

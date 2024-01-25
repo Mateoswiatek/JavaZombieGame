@@ -11,7 +11,7 @@ import java.util.Objects;
  * Jest Singletonem
  */
 public class ZombieFactory implements SpriteFactory{
-    public static String defaultPathToImage = "../resources/walkingdead.png";
+    static String defaultPathToImage = "../resources/walkingdead.png";
     BufferedImage tape;
     private static ZombieFactory instance;
     public static ZombieFactory getInstance(){

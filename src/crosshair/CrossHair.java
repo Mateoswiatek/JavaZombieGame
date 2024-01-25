@@ -15,7 +15,8 @@ import java.io.IOException;
 public class CrossHair implements MouseMotionListener, MouseListener {
     Cursor normalCursor;
     Cursor shotCursor;
-    int x, y;
+    int x;
+    int y;
 //    boolean activated = false; // czy jest aktywny, do dalszego rozwoju ?
     private DrawPanel parent;
 
@@ -25,17 +26,19 @@ public class CrossHair implements MouseMotionListener, MouseListener {
         try {
             normalCursorImage = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/crosshair1_normal_32.png")));
             shotCursorImage = ImageIO.read(Objects.requireNonNull(getClass().getResource("/resources/crosshair1_fire_32.png")));
+            int xNormmal = normalCursorImage.getWidth(null);
+            int yNormal = normalCursorImage.getHeight(null);
+            int xShot = shotCursorImage.getWidth(null);
+            int yShot = shotCursorImage.getHeight(null);
+            normalCursor = Toolkit.getDefaultToolkit().createCustomCursor(normalCursorImage , new Point(xNormmal/2, yNormal/2), "cursor"); // miejsce przyłożenia wzgledem obrazka
+            shotCursor = Toolkit.getDefaultToolkit().createCustomCursor(shotCursorImage , new Point(xShot/2, yShot/2), "cursor"); // miejsce przyłożenia wzgledem obrazka
+//            throw new IOException("TESTOWO");
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            System.err.println("Nie udalo sie zaladowac skorek dla celownika");
+            normalCursor = Cursor.getDefaultCursor();
+            shotCursor = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
         }
-
-        int xNormmal = normalCursorImage.getWidth(null);
-        int yNormal = normalCursorImage.getHeight(null);
-        int xShot = shotCursorImage.getWidth(null);
-        int yShot = shotCursorImage.getHeight(null);
-        normalCursor = Toolkit.getDefaultToolkit().createCustomCursor(normalCursorImage , new Point(xNormmal/2, yNormal/2), "cursor"); // miejsce przyłożenia wzgledem obrazka
-        shotCursor = Toolkit.getDefaultToolkit().createCustomCursor(shotCursorImage , new Point(xShot/2, yShot/2), "cursor"); // miejsce przyłożenia wzgledem obrazka
-    }
+   }
     List<CrossHairListener> listeners = new ArrayList<>();
     public void addCrossHairListener(CrossHairListener e){
         listeners.add(e);

@@ -51,9 +51,9 @@ https://github.com/Mateoswiatek/JavaZombieGame
 //TODO dodać po lewej stornie jakas postac, jakiegos bohatera czy cos. aby on strzel, aby mial jakas bron (skorke broni) i aby ona sie obracala tam gdzie jest celownik.
 // I w tedy np zrobic jakas bariere po lewej stronie, jakis domek, i jesli zoombie wejdzie w domek to gracz obrywa.
 public class Main {
-    public final static int backgroundWIDTH = 1000;
-    public final static int backgroundHEIGHT = 700;
-    public static int MAX_SPIRITES = 5;
+    public static final int BACKGROUND_WIDTH = 1000;
+    public static final int BACKGROUND_HEIGHT = 700;
+    public static final int MAX_SPIRITES = 5;
     public static void main(String[] args) {
 
         //TODO dodać Zombie Factory do SpiritHoldera, o albo SpiritHolder ma funkcje dodajaca kolejna fabrykę, przyjmuje nazwę klasy i dodaje instancję do jakiejś listy czy coś
@@ -86,9 +86,8 @@ public class Main {
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleAtFixedRate(spawnSpirite::spawnSpirite, 0, 2, TimeUnit.SECONDS);
 
-
         frame.setContentPane(panel);
-        frame.setSize(backgroundWIDTH, backgroundHEIGHT);
+        frame.setSize(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setResizable(true);
@@ -98,7 +97,7 @@ public class Main {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 scheduledExecutorService.close();
-                panel.animationThread.interrupt();
+                panel.getAnimationThread().interrupt();
                 gunSoundsThread.interrupt();
                 // tu zatrzymaj watek
                 // ale nie za pomocą metody stop() !!!

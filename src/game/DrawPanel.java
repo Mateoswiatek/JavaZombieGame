@@ -14,25 +14,29 @@ import java.util.Comparator;
 import java.util.List;
 
 public class DrawPanel  extends JPanel implements CrossHairListener {
-    public AnimationThread animationThread;
+    AnimationThread animationThread;
     BufferedImage background;
-    int FPS = 30;
+    int fps = 30;
     final List<Spirites> spiritesList;
     private JLabel label;
     int shotCounter = 0;
     int killed = 0;
+    int celnosc = 100;
+    static final String DEFAULT_LABEL = "Wynik: %d Celnosc: %d%%";
+
     public DrawPanel(URL backgroundImagageURL, CrossHair crossHair, int fps, List<Spirites> spiritesList) {
-        label = new JLabel("Wynik: " + killed + " Celnosc:");
+        label = new JLabel();
         label.setForeground(Color.BLACK);
         Font font = label.getFont();
         label.setFont(new Font(font.getName(), font.getStyle(), 30));
         setLayout(new BorderLayout());
         add(label, BorderLayout.NORTH);
+        showStat();
 
         crossHair.addCrossHairListener(this);
         crossHair.setDrawPanel(this);
 
-        this.FPS = fps;
+        this.fps = fps;
         this.spiritesList = spiritesList;
         try {
             background = ImageIO.read(backgroundImagageURL);
@@ -55,14 +59,16 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
             // TODO animacja smierci, dodac do tej metody przed usunieciem co jest wolana dla kazdego obiektu w Javie.
             spiritesList.removeIf(sprite -> {
                 sprite.draw(g2d, this);
-                if(!sprite.isVisble()) label.setText("Wynik: " + --killed);
+                if(!sprite.isVisble()) {
+                    celnosc = (--killed*100)/shotCounter;
+                    showStat();
+                }
                 return !sprite.isVisble();
             });
         }
     }
     @Override
     public void onShotsFired(int x, int y) {
-        shotCounter++;
 //System.out.println("DrawPanel dostal informacje o strzale! w x,y = " + x + ", " + y);
 
         // Które działa szybciej???
@@ -72,10 +78,19 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
                 .max(Comparator.comparingDouble(Spirites::getScale))
                 .ifPresent(sprite -> {
                     spiritesList.remove(sprite);
-                    killed++;
+                    ++killed;
                 });
-        label.setText("Wynik: " + killed + " Celnosc: " + 100*killed/shotCounter + "%");
+        celnosc = (killed*100)/++shotCounter;
+        showStat();
     }
+    public void showStat(){
+        label.setText(DEFAULT_LABEL.formatted(killed, celnosc));
+    }
+
+    public AnimationThread getAnimationThread() {
+        return animationThread;
+    }
+
     class AnimationThread extends Thread{
         @Override
         public void run() {
@@ -85,7 +100,7 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
                 }
                 repaint();
                 try {
-                    sleep(1000 / FPS);  // 30 klatek na sekundę
+                    sleep(1000 / fps);  // 30 klatek na sekundę
                 } catch (InterruptedException e) {
 //                    e.printStackTrace();
                     break;

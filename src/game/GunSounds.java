@@ -9,7 +9,7 @@ import java.io.IOException;
 public class GunSounds implements CrossHairListener, Runnable{
     File soundFile;
     AudioInputStream audioInputStream;
-    private volatile boolean running = true;
+    private final boolean running = true;
     public GunSounds(String filePath){
         soundFile = new File(filePath);
     }
@@ -26,6 +26,7 @@ public class GunSounds implements CrossHairListener, Runnable{
             Thread.sleep(shot.getMicrosecondLength() / 1_000_000);
         } catch (InterruptedException | LineUnavailableException | IOException | UnsupportedAudioFileException e) {
             System.err.println("Problem z dzwiekiem, onShotsFired");
+            Thread.currentThread().interrupt(); // Sonar
             e.printStackTrace();
         }
     }
@@ -37,6 +38,7 @@ public class GunSounds implements CrossHairListener, Runnable{
                 try {
                     wait(); // czeka na powiadomienie
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
 //                    e.printStackTrace();
                     break;
                 }

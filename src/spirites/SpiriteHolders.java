@@ -25,7 +25,7 @@ public class SpiriteHolders {
             double scale = random.nextDouble(0.5, 2);
             // zawsze ponad linia horyzonut (1000, 460-(int)(scale*Zombie.HEIGHT), scale)));
             // Dotykaja ziemi dolnej: (1000, 680-(int)(scale*Zombie.HEIGHT), scale));
-            if(spiritesList.size() < MAX_SPIRITES) spiritesList.add(spriteFactory.newSprite(1000, random.nextInt(460-(int)(scale*Zombie.HEIGHT), 680-(int)(scale*Zombie.HEIGHT)), scale));
+            if(spiritesList.size() < MAX_SPIRITES) spiritesList.add(spriteFactory.newSprite(1000, (int)(((scale-0.5)*220/1.5 + 460 )-(scale*Zombie.HEIGHT)), scale));
         }
     }
 }

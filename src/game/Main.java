@@ -53,7 +53,7 @@ https://github.com/Mateoswiatek/JavaZombieGame
 public class Main {
     public static final int BACKGROUND_WIDTH = 1000;
     public static final int BACKGROUND_HEIGHT = 700;
-    public static final int MAX_SPIRITES = 5;
+    public static final int MAX_SPIRITES = 3;
     public static void main(String[] args) {
 
         //TODO dodać Zombie Factory do SpiritHoldera, o albo SpiritHolder ma funkcje dodajaca kolejna fabrykę, przyjmuje nazwę klasy i dodaje instancję do jakiejś listy czy coś

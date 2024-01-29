@@ -39,3 +39,7 @@ Thanks to the application of design patterns and SOLID principles, the applicati
 - **Introduction of Other Enemies**: Expand the variety of adversaries.
 - **Plot Implementation**: Add a storyline to the game.
 - **Death Effect for Zombies**: Integrate a death effect for zombies.
+
+![Screenshot 1](https://github.com/Mateoswiatek/JavaZombieGame/raw/master/Screenshot_1.png)
+![Screenshot 2](https://github.com/Mateoswiatek/JavaZombieGame/raw/master/Screenshot_2.png)
+![Screenshot 3](https://github.com/Mateoswiatek/JavaZombieGame/raw/master/Screenshot_3.png)

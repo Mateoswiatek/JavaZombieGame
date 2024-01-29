@@ -53,7 +53,7 @@ https://github.com/Mateoswiatek/JavaZombieGame
 public class Main {
     public static final int BACKGROUND_WIDTH = 1000;
     public static final int BACKGROUND_HEIGHT = 700;
-    public static final int MAX_SPIRITES = 3;
+    public static final int MAX_SPIRITES = 2;
     public static void main(String[] args) {
 
         //TODO dodać Zombie Factory do SpiritHoldera, o albo SpiritHolder ma funkcje dodajaca kolejna fabrykę, przyjmuje nazwę klasy i dodaje instancję do jakiejś listy czy coś
@@ -84,7 +84,7 @@ public class Main {
         // Przeniesc do zombie factory ??? ewentualnie do Spirit Holders?
         // albo wgl zrobić listę
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(spawnSpirite::spawnSpirite, 0, 2, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(spawnSpirite::spawnSpirite, 10, 2, TimeUnit.SECONDS);
 
         frame.setContentPane(panel);
         frame.setSize(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);

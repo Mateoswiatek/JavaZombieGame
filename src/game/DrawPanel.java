@@ -73,13 +73,15 @@ public class DrawPanel  extends JPanel implements CrossHairListener {
 
         // Które działa szybciej???
         //spriteList.remove(spriteList.stream().filter(sprite -> sprite.isHit(x, y)).min(Comparator.comparingDouble(Sprite::getScale)).orElse(null));
-        spiritesList.stream()
-                .filter(sprite -> sprite.isHit(x, y))
-                .max(Comparator.comparingDouble(Spirites::getScale))
-                .ifPresent(sprite -> {
-                    spiritesList.remove(sprite);
-                    ++killed;
-                });
+        synchronized (spiritesList) {
+            spiritesList.stream()
+                    .filter(sprite -> sprite.isHit(x, y))
+                    .max(Comparator.comparingDouble(Spirites::getScale))
+                    .ifPresent(sprite -> {
+                        spiritesList.remove(sprite);
+                        ++killed;
+                    });
+        }
         celnosc = (killed*100)/++shotCounter;
         showStat();
     }

@@ -39,12 +39,12 @@ public class Zombie implements Spirites {
     public void draw(Graphics g, JPanel parent) {
         Image img = tape.getSubimage(WIDTH * index, 0, WIDTH, HEIGHT); // pobierz klatkę
 //        g.drawImage(img, x, y - (int) (HEIGHT * scale) / 2, (int) (WIDTH * scale), (int) (HEIGHT * scale), parent);
-        g.drawImage(img, x, y, (int) (WIDTH * scale), (int) (HEIGHT * scale), parent);
+        g.drawImage(img, x, y, real_width, real_heiegt, parent);
 
         //Hitbox
-        g.drawRect(x, y, real_width, real_heiegt);
-        int dotSize = 10; // Rozmiar kropki
-        g.fillOval(x - dotSize/2, y - dotSize/2, dotSize, dotSize);
+//        g.drawRect(x, y, real_width, real_heiegt);
+//        int dotSize = 10; // Rozmiar kropki
+//        g.fillOval(x - dotSize/2, y - dotSize/2, dotSize, dotSize);
     }
 
     /**

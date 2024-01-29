@@ -49,6 +49,7 @@ public class CrossHair implements MouseMotionListener, MouseListener {
     }
     @Override
     public void mousePressed(MouseEvent e) {
+        parent.setCursor(shotCursor);
 //System.out.println("W celowniku x,y = " + x + ", " + y);
         x = e.getX();
         y = e.getY();
@@ -57,6 +58,12 @@ public class CrossHair implements MouseMotionListener, MouseListener {
     }
     @Override
     public void mouseReleased(MouseEvent e) {
+        try {
+            Thread.sleep(200);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        parent.setCursor(normalCursor);
 //        System.out.println("Zwolniono");
 //        activated = false;
     }
